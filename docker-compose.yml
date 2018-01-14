@@ -1,0 +1,44 @@
+version: "3"
+services:
+  db:
+    image: postgres
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+  db2:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123123123
+  master:
+    build: server
+    environment:
+      - DB_HOST=db2
+      - DB_PASSWORD=123123123
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+      - db2
+    ports:
+      - "3000:3000"
+  worker:
+    build: worker
+    environment:
+      - REDIS_HOST=redis
+      - MASTER_HOST=master
+    depends_on:
+      - redis
+      - master
+  client:
+    build: client
+    environment:
+      - MASTER_HOST=master
+      - REDIS_HOST=redis
+    volumes:
+      - .:/flowci-test
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+      - redis
+      - master
