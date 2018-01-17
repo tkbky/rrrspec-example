@@ -1,4 +1,4 @@
-FROM ruby:2.4.3
+FROM ruby:2.3.5
 
 RUN apt-get update -qq && \
   apt-get install -y build-essential rsync ssh libpq-dev nodejs git-core
@@ -12,13 +12,15 @@ WORKDIR client
 
 COPY client_config.rb .
 COPY start.sh .
-
-RUN mkdir -p /tmp/rrrspec-rsync
+COPY example example
 
 RUN git clone https://github.com/tkbky/flowci-test.git
-RUN echo "gem 'rrrspec-client'" >> flowci-test/Gemfile
+RUN echo "gem 'rrrspec-client', github: 'cookpad/rrrspec'" >> flowci-test/Gemfile
+RUN echo "gem 'extreme_timeout', github: 'draftcode/extreme_timeout'" >> flowci-test/Gemfile
 RUN cd flowci-test && bundle install && cd ..
 
 COPY client_config.rb flowci-test/.rrrspec
 
 RUN chmod a+x start.sh
+
+# CMD ["/bin/bash", "./start.sh"]

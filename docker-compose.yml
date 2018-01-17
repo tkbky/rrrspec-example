@@ -13,8 +13,11 @@ services:
   master:
     build: server
     environment:
-      - DB_HOST=db2
-      - DB_PASSWORD=123123123
+      - RRRSPEC_ENV=development
+      - RRRSPEC_DATABASE_HOST=db2
+      - RRRSPEC_DATABASE_NAME=rrrspec_development
+      - RRRSPEC_DATABASE_USERNAME=root
+      - RRRSPEC_DATABASE_PASSWORD=123123123
       - REDIS_HOST=redis
     depends_on:
       - redis
@@ -24,8 +27,8 @@ services:
   worker:
     build: worker
     environment:
-      - REDIS_HOST=redis
       - MASTER_HOST=master
+      - REDIS_HOST=redis
     depends_on:
       - redis
       - master

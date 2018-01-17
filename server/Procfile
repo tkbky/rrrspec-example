@@ -1,0 +1,2 @@
+web: bundle exec unicorn -p 3000
+server: bundle exec rrrspec-server server --config server_config.rb --no-daemonize

@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
-gem "rspec"
 gem "extreme_timeout", github: "draftcode/extreme_timeout" # For the segmentation fault fix
 gem "rrrspec-server", github: "cookpad/rrrspec"
+gem "rrrspec-web", github: "cookpad/rrrspec"
+gem "mysql2"
+gem "unicorn"

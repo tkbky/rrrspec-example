@@ -1,4 +1,4 @@
-FROM ruby:2.4
+FROM ruby:2.3.5
 MAINTAINER KY <infcurious@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -13,11 +13,16 @@ RUN echo "gem: --no-ri --no-rdoc" > /root/.gemrc
 WORKDIR /rrrspec-server
 
 RUN gem install foreman
-RUN gem install rrrspec-server
-RUN gem install mysql2
 
+COPY config.ru .
+COPY database.yml .
+COPY Gemfile .
+COPY Procfile .
+COPY Rakefile .
 COPY server_config.rb .
 COPY start.sh .
+
+RUN bundle install
 
 RUN chmod a+x start.sh
 
@@ -27,8 +32,9 @@ COPY id_rsa.rrrspec.pub /root/.ssh/authorized_keys
 RUN service ssh start
 
 RUN mkdir -p /tmp/rrrspec-rsync
+RUN mkdir -p /tmp/pids
 
 ENV REDIS_HOST redis
-ENV DB_PASSWORD 123123123
+ENV RRRSPEC_DATABASE_PASSWORD 123123123
 
 CMD ["/bin/bash", "./start.sh"]

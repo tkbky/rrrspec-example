@@ -5,7 +5,6 @@ RRRSpec.configure do |conf|
 end
 
 RRRSpec.configure(:worker) do |conf|
-  RRRSpec.logger = Logger.new($stderr)
   conf.rsync_remote_path = "#{ENV['MASTER_HOST']}:/tmp/rrrspec-rsync"
   conf.rsync_options = %w(
     --compress
@@ -18,7 +17,5 @@ RRRSpec.configure(:worker) do |conf|
   ).join(' ')
   conf.worker_type = 'default'
   conf.working_dir = '/tmp/working'
-  conf.slave_processes = 8
-  conf.stdout_path = '/dev/stdout'
-  conf.stderr_path = '/dev/stderr'
+  conf.pidfile = '/tmp/pids/rrrspec-worker.pid'
 end

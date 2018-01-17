@@ -1,4 +1,4 @@
-FROM ruby:2.4
+FROM ruby:2.3.5
 MAINTAINER KY <infcurious@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -24,8 +24,6 @@ RUN mkdir -m700 -p /root/.ssh
 COPY id_rsa.rrrspec /root/.ssh/id_rsa
 RUN chmod 600 /root/.ssh/id_rsa
 COPY ssh_config /root/.ssh/config
-
-RUN mkdir -p /tmp/rrrspec-rsync
 
 ENV REDIS_HOST redis
 ENV MASTER_HOST master
